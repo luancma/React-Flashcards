@@ -34,8 +34,8 @@ export function setLocalNotification() {
                     Notifications.cancelAllScheduledNotificationsAsync()
                     let tomorrow = new Date()
                     tomorrow.setDate(tomorrow.getDate() + 1)
-                    tomorrow.setHours(13)
-                    tomorrow.setMinutes(00)
+                    tomorrow.setHours(12)
+                    tomorrow.setMinutes(30)
 
                     Notifications.scheduleLocalNotificationAsync(
                         createNotification(),
