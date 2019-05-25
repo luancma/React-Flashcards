@@ -7,59 +7,72 @@ import {
   Animated
 } from "react-native";
 import { connect } from "react-redux";
-import { fetchDecks, fetchDeck } from "../store/actions/decks";
+import { fetchDeck } from "../store/actions/decks";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { clearLocalNotification, setLocalNotification } from "../notification";
 class DeckScreen extends Component {
   state = {
     fadeValue: new Animated.Value(0)
   };
+
   componentDidMount() {
-    this.props.dispatch(fetchDeck(this.props.navigation.getParam("title")));
+    console.log("DidMount");
+    const { navigation, dispatch } = this.props;
+    dispatch(fetchDeck(navigation.getParam("title")));
     Animated.timing(this.state.fadeValue, {
       toValue: 1,
       duration: 1000
     }).start();
   }
 
+  componentDidUpdate(prevProps) {
+    console.log(prevProps.deck.title);
+    const { navigation, dispatch } = this.props;
+    if (navigation.getParam("title") !== prevProps.deck.title) {
+      dispatch(fetchDeck(navigation.getParam("title")));
+    }
+  }
+
   startQuiz = () => {
-    const deckTitle = this.props.navigation.getParam("title");
-
+    const { navigation, deck } = this.props;
+    const deckTitle = deck.title;
     clearLocalNotification().then(setLocalNotification);
-
-    this.props.navigation.navigate("QuizScreen", { title: deckTitle });
+    navigation.navigate("QuizScreen", { title: deckTitle });
   };
 
   render() {
+    const { navigation } = this.props;
     const deckTitle = this.props.navigation.getParam("title");
-    const { deck, navigation } = this.props;
     const { questions } = this.props.deck;
-    const validDeck = questions && questions;
-    const deckLength = validDeck && validDeck.length;
+    console.log(this.props.deck.title);
 
-    console.log(this.props.deck);
+    const hasQuestions =
+      Array.isArray(questions) && questions.length >= 1 ? true : false;
+    console.log(hasQuestions);
 
     return (
       <Animated.View
         style={[styles.MainView, { opacity: this.state.fadeValue }]}
       >
-        <Text style={styles.textCardTitle}>{deckTitle}</Text>
+        <Text style={styles.textCardTitle}>
+          {this.props.navigation.getParam("title")}
+        </Text>
         <Text style={styles.textCardLength}>
-          {deckLength === undefined ? 0 : deckLength} cards
+          {hasQuestions ? questions.length : 0} cards
           <Icon name="cards-playing-outline" size={30} />
         </Text>
 
-        {deckLength === 0 ? (
-          <TouchableOpacity disabled style={styles.quizDisabledButton}>
+        {hasQuestions ? (
+          <TouchableOpacity
+            onPress={() => this.startQuiz()}
+            style={styles.quizButton}
+          >
             <View>
               <Text style={styles.textButton}>Quiz</Text>
             </View>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity
-            onPress={() => this.startQuiz()}
-            style={styles.quizButton}
-          >
+          <TouchableOpacity disabled style={styles.quizDisabledButton}>
             <View>
               <Text style={styles.textButton}>Quiz</Text>
             </View>

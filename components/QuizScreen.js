@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
-import { fetchDecks } from "../store/actions/decks";
+import { fetchDeck } from "../store/actions/decks";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 class QuizScreen extends Component {
   state = {
@@ -12,7 +12,8 @@ class QuizScreen extends Component {
   };
 
   componentDidMount() {
-    this.props.dispatch(fetchDecks());
+    deckTitle = this.props.navigation.getParam("title");
+    this.props.dispatch(fetchDeck(deckTitle));
   }
 
   handleResetStatus = () => {
@@ -38,12 +39,10 @@ class QuizScreen extends Component {
   };
 
   nextQuestion = () => {
-    const { decks, navigation } = this.props;
+    const { deck } = this.props;
     const { questaoIndice } = this.state;
 
-    let questionLength = Object.values(
-      decks[navigation.getParam("title")].questions
-    ).length;
+    let questionLength = deck.questions.length;
     questaoIndice === questionLength - 1
       ? this.setState({ mostrarQuestao: false })
       : this.setState(previousState => ({
@@ -57,22 +56,16 @@ class QuizScreen extends Component {
   };
 
   render() {
-    const { navigation, decks } = this.props;
+    const { deck } = this.props;
     const {
       mostrarQuestao,
       resultado,
       questaoIndice,
       questaoCorreta
     } = this.state;
-    let awnser = Object.values(
-      decks[navigation.getParam("title")].questions[questaoIndice]
-    )[1];
-    let question = Object.values(
-      decks[navigation.getParam("title")].questions[questaoIndice]
-    )[0];
-    let questionsLength = Object.values(
-      decks[navigation.getParam("title")].questions
-    ).length;
+    let awnser = deck.questions[questaoIndice].answer;
+    let question = deck.questions[questaoIndice].question;
+    let questionsLength = deck.questions.length;
     console.log(questionsLength);
 
     return mostrarQuestao === true ? (
@@ -162,7 +155,7 @@ class QuizScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  decks: state.decks
+  deck: state.deck
 });
 
 const styles = StyleSheet.create({

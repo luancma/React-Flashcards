@@ -47,14 +47,14 @@ const AppNavigator = createStackNavigator({
   DeckDetails: {
     screen: DeckScreen,
     navigationOptions: ({ navigation }) => ({
-      title: "Detalhes do deck"
+      title: "Details of deck"
     })
   },
 
   QuizScreen: {
     screen: QuizScreen,
     navigationOptions: ({ navigation }) => ({
-      title: "Quiz"
+      title: "Quiz Screen"
     })
   },
   // Add card to deck:
