@@ -1,113 +1,120 @@
-import React, {Component} from 'react'
-import {View, TextInput,StyleSheet, TouchableOpacity, Text} from 'react-native'
-import { addCard } from '../store/actions/decks';
-import { connect } from 'react-redux'
+import React, { Component } from "react";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Text
+} from "react-native";
+import { addCard } from "../store/actions/decks";
+import { connect } from "react-redux";
 
 class AddCard extends Component {
-
-  state ={
-    pergunta: '',
-    resposta: ''
-  }
+  state = {
+    pergunta: "",
+    resposta: ""
+  };
 
   handleSaveCard = () => {
-    const { navigation, saveCard } = this.props
-    const {pergunta, resposta} = this.state
+    const { navigation, saveCard } = this.props;
+    const { pergunta, resposta } = this.state;
 
-    const title = navigation.getParam('title');
+    const title = navigation.getParam("title");
     let question = pergunta;
-    let answer = resposta; 
+    let answer = resposta;
     const card = {
       question,
       answer
-    }
-    saveCard(title, card)
-    navigation.goBack()
-  }
+    };
+    saveCard(title, card);
+    navigation.goBack();
+  };
 
   handleChangeQuestion = text => {
-    this.setState({ pergunta: text })
-  }
+    this.setState({ pergunta: text });
+  };
 
   handleChangeAnswer = text => {
-    this.setState({ resposta: text })
-  }
+    this.setState({ resposta: text });
+  };
 
-  
-  render(){
-    const {pergunta, resposta} = this.state
-    return(
+  render() {
+    const { pergunta, resposta } = this.state;
+    return (
       <View style={styles.MainView}>
-        <TextInput 
-          style={styles.inputStyle} 
-          onChangeText={text => this.handleChangeQuestion(text) } 
-          placeholder="Question" 
+        <TextInput
+          style={styles.inputStyle}
+          onChangeText={text => this.handleChangeQuestion(text)}
+          placeholder="Question"
         />
-        <TextInput 
-          style={styles.inputStyle} 
-          onChangeText={text => this.handleChangeAnswer(text) } 
+        <TextInput
+          style={styles.inputStyle}
+          onChangeText={text => this.handleChangeAnswer(text)}
           placeholder="Answer"
         />
 
-        {pergunta === "" || resposta === "" 
-          ?         
+        {pergunta === "" || resposta === "" ? (
           <TouchableOpacity style={styles.buttonDisabledStyle} disabled>
             <Text style={styles.textButton}>Create card</Text>
-          </TouchableOpacity> 
-          : 
-          <TouchableOpacity style={styles.buttonStyle} onPress={() => this.handleSaveCard()}>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={() => this.handleSaveCard()}
+          >
             <Text style={styles.textButton}>Create card</Text>
-          </TouchableOpacity>  
-        }
+          </TouchableOpacity>
+        )}
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   MainView: {
-    width: '90%',
-    flexDirection: 'column',
-    alignItems: 'center'
+    width: "90%",
+    flexDirection: "column",
+    alignItems: "center"
   },
   buttonStyle: {
     marginTop: 50,
     borderRadius: 10,
     borderWidth: 0.3,
-    width: 200, 
+    width: 200,
     height: 50,
-    backgroundColor: '#0080ff',
-    alignItems: 'center',
+    backgroundColor: "#0080ff",
+    alignItems: "center"
   },
   buttonDisabledStyle: {
     marginTop: 50,
     borderRadius: 10,
     borderWidth: 0.3,
-    width: 200, 
+    width: 200,
     height: 50,
-    backgroundColor: '#0080ff',
-    alignItems: 'center',
+    backgroundColor: "#0080ff",
+    alignItems: "center",
     opacity: 0.4
   },
   textButton: {
-    marginTop: 10, 
-    fontSize:20, 
-    color: 'white', 
-    fontWeight: 'bold'
+    marginTop: 10,
+    fontSize: 20,
+    color: "white",
+    fontWeight: "bold"
   },
   inputStyle: {
-    marginLeft: '5%',
-    marginTop: '10%',
+    marginLeft: "5%",
+    marginTop: "10%",
     height: 40,
     width: 300,
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   }
-})
-
-const mapDispatchToProps = dispatch => ({
-  saveCard: (title, card) => dispatch(addCard(title, card)),
 });
 
+const mapDispatchToProps = dispatch => ({
+  saveCard: (title, card) => dispatch(addCard(title, card))
+});
 
-
-export default connect(null, mapDispatchToProps)(AddCard)
+export default connect(
+  null,
+  mapDispatchToProps
+)(AddCard);
