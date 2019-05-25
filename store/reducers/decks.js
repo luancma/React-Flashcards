@@ -15,7 +15,7 @@ export default (decks = (state = {}, action) => {
     case ADD_DECK_SUCCESS:
       return {
         ...state,
-        [action.deck.title]: action.deck
+        ...action.deck
       };
 
     default:

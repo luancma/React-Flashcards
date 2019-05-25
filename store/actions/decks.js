@@ -34,10 +34,10 @@ export const fetchDeck = title => {
 };
 
 // Criar novo deck
-export function addDeckSuccess(deck) {
+export function addDeckSuccess(decks) {
   return {
     type: ADD_DECK_SUCCESS,
-    deck
+    decks
   };
 }
 

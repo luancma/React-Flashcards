@@ -49,7 +49,7 @@ class DeckScreen extends Component {
           <Icon name="cards-playing-outline" size={30} />
         </Text>
 
-        {deckLength == 0 ? (
+        {deckLength === 0 ? (
           <TouchableOpacity disabled style={styles.quizDisabledButton}>
             <View>
               <Text style={styles.textButton}>Quiz</Text>
